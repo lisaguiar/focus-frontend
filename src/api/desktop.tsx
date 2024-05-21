@@ -1,15 +1,15 @@
 import axios from "./config/axios"
 
-export const getDesktops = async (values: { user_id: number }) => {
+export const getDesktops = async (user_id: number) => {
     try {
-        const results = await axios.get(`/desktop/${values.user_id}`)
+        const results = await axios.get(`/desktop/${user_id}`)
         return results.data
     } catch (error) {
         return error
     }
 }
 
-export const getDesktop = async ({desktop_id}: { desktop_id: number }) => {
+export const getDesktop = async (desktop_id: number) => {
     try {
         const results = await axios.get(`/desktop/single/${desktop_id}`)
         return results.data

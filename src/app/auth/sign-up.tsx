@@ -12,10 +12,11 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
-import { signup } from "@/api/auth"
 import { useNavigate } from "react-router-dom"
+import { useUser } from "@/context/user"
 
 export const SignUp = () => {
+    const { signup } = useUser()
     const navigate = useNavigate()
 
     const formSchema = z.object({
@@ -47,8 +48,10 @@ export const SignUp = () => {
 
     async function onSubmit (values: z.infer<typeof formSchema>) {
         try {
-            await signup(values)
-            navigate('/')
+            const results: number = await signup(values)
+            if (results) {
+                navigate(`/${results}/board`)
+            }
         } catch (error:any) {
             //erro
         }

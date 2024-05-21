@@ -19,11 +19,16 @@ const config = {
     },
     extend: {
       width: {
-        sidebar: "var(--sidebar)",
+        navbar: "var(--navbar-width)",
+        sidebar: "var(--sidebar-width)",
         outlet: "var(--outlet)",
       },
       height: {
-        navbar: "var(--navbar)",
+        navbar: "var(--navbar-height)",
+        outlet: "var(--sidebar-height)"
+      },
+      minHeight: {
+        outlet: "var(--sidebar-height)"
       },
       fontFamily: {
         sans: ["var(--font-family-sans)"],

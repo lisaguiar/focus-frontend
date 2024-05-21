@@ -83,7 +83,7 @@ export const FormDesktop: React.FC<FormDesktopProps> = ({ onClose, operation }) 
     }
 
     return (
-        <div className="h-screen w-screen absolute top-0 left-0 z-20 bg-gray-900 bg-opacity-30">
+        <div className="h-screen w-screen fixed top-0 left-0 z-20 bg-gray-900 bg-opacity-30">
             <div className="h-full flex items-center justify-center">
             <Card className="w-[450px] relative">
                 <CardHeader>

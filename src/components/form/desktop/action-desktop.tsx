@@ -14,7 +14,7 @@ export const ActionDesktop = ({operation} : {operation: string}) => {
 
     return (
         <>
-            <div onClick={toggleDesktopForm} className="flex items-center justify-center rounded-full h-full w-full bg-red-400">     
+            <div onClick={toggleDesktopForm} className="absolute flex items-center justify-center h-full w-full">     
             </div>
 
             {isDesktopFormVisible && <FormDesktop onClose={closeDesktopForm} operation={operation} />}

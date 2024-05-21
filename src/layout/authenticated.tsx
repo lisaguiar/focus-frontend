@@ -1,44 +1,48 @@
-import { session, userData } from "@/api/auth"
+import { Loading } from "@/app/root/loading"
+import { Navbar } from "@/components/root/navbar"
 import { Sidebar } from "@/components/root/sidebar"
-import { useEffect, useState } from "react"
+import { useAuth } from "@/context/auth"
+import { useUser } from "@/context/user"
+import { useEffect } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 
-export const AuthenticatedLayout = () => {
-    const [authorized, setAuthorized] = useState<boolean>(true)
-    const [user, setUser] = useState([])
+export const AuthenticatedLayout: React.FC = () => {
+    const { authorized, authorizedUrl, loading } = useAuth()
+    const { user } = useUser()
     const navigate = useNavigate()
 
     useEffect(() => {
-        validateSession()
-        if (!authorized) {
-            navigate(`/sign-in`)
+        if (!loading && !authorized) {
+            navigate('/sign-in')
         }
-    }, [authorized])
-    
-    async function validateSession () {
-        try {
-            const results = await session()
-            setAuthorized(results?.data.authorized || false)
-            
-            const data = userData()
-            setUser(data)
-        } catch (error) {
-            setAuthorized(false)
-            //mensagem = erro com o servidor. tente novamente
+        if (!loading && authorized && !authorizedUrl && user) {
+            navigate(`/${user.user_id}/board`)
         }
-    }
+    }, [loading, authorized])
 
-    return (
-        <>
-            {authorized && 
-                <div className="flex flex-wrap">
-                    <div className="w-sidebar min-h-screen">
+    if (loading) {
+        return (
+            <Loading />
+        )
+    }
+    if (authorized) {
+        return (
+            <>
+                <div className="static h-full min-w-full bg-red-300">
+                    <div className="fixed top-0 right-0 w-full h-navbar bg-white z-10">
+                        <Navbar />
+                    </div>
+                    <div className="fixed top-16 left-2 w-sidebar h-outlet bg-white rounded-md z-0">
                         <Sidebar />
                     </div>
-                    <div className="w-outlet min-h-screen bg-red-500">
-                        <Outlet />
+                    <div className="absolute top-16 right-5 w-outlet z-0">
+                        <div className="bg-destructive-foreground border-2 rounded-md min-h-outlet">
+                            <Outlet />
+                        </div>
+                        <div className="my-3" />
                     </div>
-                </div>}
-        </>
-    )
+                </div>
+            </>
+        )
+    }  
 }

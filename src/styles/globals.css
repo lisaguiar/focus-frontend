@@ -28,9 +28,10 @@
 
         --purple: #010922;
 
-        --sidebar: 300px;
-        --navbar: 45px;
-        --outlet: calc(100% - 300px);
+        --sidebar-width: 19rem;
+        --sidebar-height: calc(100vh - 5rem);
+        --navbar-height: 3.5rem;
+        --outlet: calc(100% - 21.5rem);
     }
     
     .dark {

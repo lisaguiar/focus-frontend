@@ -1,35 +1,24 @@
-import { logout, session, userData } from "@/api/auth"
-import { useEffect, useState } from "react"
+import { useAuth } from "@/context/auth"
+import { useUser } from "@/context/user"
+import { useEffect } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 
 export const UnauthenticatedLayout = () => {
-    const [authorized, setAuthorized] = useState<boolean>(false)
-    const [user, setUser] = useState()
+    const { authorized, authorizedUrl, loading } = useAuth()
+    const { user } = useUser()
     const navigate = useNavigate()
 
     useEffect(() => {
-        validateSession()
-        if (authorized) {
-            navigate(`/${user?.id}/board`)
+        if (!loading && authorized && user) {
+            navigate(`/${user.user_id}/board`)
         }
-    }, [authorized])
-    
-    async function validateSession () {
-        try {
-            const results = await session()
-            setAuthorized(results?.data.authorized || false)
+    }, [loading, authorized, user])
 
-            const data = userData()
-            setUser(data)
-        } catch (error) {
-            setAuthorized(false)
-            //mensagem = erro com o servidor. tente novamente
-        }
+    if (!authorized && !authorizedUrl) {
+        return (
+            <div>
+                <Outlet />
+            </div>
+        )
     }
-
-    return (
-        <div>
-            {!authorized && <Outlet />}
-        </div>
-    )
 }
