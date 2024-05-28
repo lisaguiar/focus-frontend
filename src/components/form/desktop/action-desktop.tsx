@@ -1,7 +1,16 @@
 import { useState } from "react"
 import { FormDesktop } from "./desktop"
 
-export const ActionDesktop = ({operation} : {operation: string}) => {
+interface FormDesktop {
+    operation: string 
+    values?: {
+        desktop_id: number
+        title: string
+        description: string
+    }
+}
+
+export const ActionDesktop: React.FC<FormDesktop> = ({ operation, values }) => {
     const [isDesktopFormVisible, setDesktopFormVisible] = useState(false)
     
     const toggleDesktopForm = () => {
@@ -17,7 +26,7 @@ export const ActionDesktop = ({operation} : {operation: string}) => {
             <div onClick={toggleDesktopForm} className="absolute flex items-center justify-center h-full w-full">     
             </div>
 
-            {isDesktopFormVisible && <FormDesktop onClose={closeDesktopForm} operation={operation} />}
+            {isDesktopFormVisible && <FormDesktop onClose={closeDesktopForm} operation={operation} values={values} />}
         </>
     )
 }

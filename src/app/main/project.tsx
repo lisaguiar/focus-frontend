@@ -10,7 +10,7 @@ type Desktop = {
     description: string
 }
 
-export const Desktop = () => {
+export const Project = () => {
 
     const data = [
         {
@@ -39,8 +39,8 @@ export const Desktop = () => {
 
     async function dataDesktop () {
         try {
-            const results = await getDesktop(1)
-            setDesktop(results)
+            const results = await getProject(1)
+            setProjec(results)
         } catch (error) {
             console.log(error)
         }
@@ -52,7 +52,7 @@ export const Desktop = () => {
 
     const DesktopMap = () => {
         return (
-            <>
+            <div className="px-4 py-2">
                 {desktop && desktop.map((desktop: Desktop) => {
                     return (
                         <div className="relative h-32 flex gap-6" key={desktop.desktop_id}>
@@ -71,14 +71,15 @@ export const Desktop = () => {
                         </div>
                     )
                 })}
-            </>
+            </div>
         )
     }
 
     const ProjectsMap = () => {
         return (
-            <>
-                <div className="px-4 py-2 grid gap-6 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
+            <div className="px-4 py-2 mt-6">
+            <p className="font-bold text-lg">Projetos</p>
+                <div className="mt-4 py-2 grid gap-6 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
                     {data.map((projet) => {
                         return (
                             <div className="px-4 py-2 bg-secondary-foreground rounded-md h-36 hover:cursor-pointer hover:bg-secondary-foreground/75 transition-all duration-500">
@@ -92,7 +93,7 @@ export const Desktop = () => {
                     </div>
                 </div>
                 
-            </>
+            </div>
         )
     }
 

@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator"
 import { useUser } from "@/context/user"
 import { PlusIcon } from "@radix-ui/react-icons"
 import { useEffect, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 
 type Desktop = {
     desktop_id: number
@@ -16,20 +17,31 @@ type Desktop = {
 
 export const Board = () => {
     const { user } = useUser()
-    const [desktops, setDesktops] = useState<Desktop>()
 
-    async function dataDesktop () {
-        try {
-            const results = await getDesktops(user.user_id)
-            setDesktops(results)
-        } catch (error) {
-            console.log(error)
+    const navigate = useNavigate()
+
+    const data = [
+        {
+            id: 1,
+            title: "Desktop 1",
+            description: "1"
+        },
+        {
+            id: 2,
+            title: "Desktop 2",
+            description: "2"
+        },
+        {
+            id: 3,
+            title: "Desktop 3",
+            description: "3"
+        },
+        {
+            id: 4,
+            title: "Desktop 4",
+            description: "4"
         }
-    }
-
-    useEffect(() => {
-        dataDesktop()
-    })
+    ]
 
 
     const DesktopMap = () => {
@@ -39,9 +51,9 @@ export const Board = () => {
                 <div className="px-4 py-2 grid gap-6 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
                     {data.map((desktop) => {
                         return (
-                            <div className="px-4 py-2 bg-secondary-foreground rounded-md h-36 hover:cursor-pointer hover:bg-secondary-foreground/75 transition-all duration-500" key={desktop.id}>
-                                <p className="text-muted">{desktop.title}</p>
-                            </div>
+                                <div onClick={() => navigate(`/${user.user_id}/d/${desktop.id}`)} className="px-4 py-2 bg-secondary-foreground rounded-md h-36 hover:cursor-pointer hover:bg-secondary-foreground/75 transition-all duration-500" key={desktop.id}>
+                                    <p className="text-muted">{desktop.title}</p>
+                                </div>
                         )
                     })}
                     <div className="relative flex justify-center items-center px-4 py-2 bg-secondary-foreground rounded-md hover:cursor-pointer hover:bg-secondary-foreground/85 transition-all duration-500">

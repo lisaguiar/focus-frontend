@@ -1,4 +1,4 @@
-import { Loading } from "@/app/root/loading"
+import { Loading } from "@/app/main/loading"
 import { Navbar } from "@/components/root/navbar"
 import { Sidebar } from "@/components/root/sidebar"
 import { useAuth } from "@/context/auth"
@@ -7,7 +7,7 @@ import { useEffect } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 
 export const AuthenticatedLayout: React.FC = () => {
-    const { authorized, authorizedUrl, loading } = useAuth()
+    const { authorized, authorizedUrl, loading, loadingUrl } = useAuth()
     const { user } = useUser()
     const navigate = useNavigate()
 
@@ -15,10 +15,11 @@ export const AuthenticatedLayout: React.FC = () => {
         if (!loading && !authorized) {
             navigate('/sign-in')
         }
-        if (!loading && authorized && !authorizedUrl && user) {
+        console.log(authorizedUrl)
+        if (!loading && !loadingUrl && authorized && !authorizedUrl && user) {
             navigate(`/${user.user_id}/board`)
         }
-    }, [loading, authorized])
+    }, [loading, authorized, authorizedUrl])
 
     if (loading) {
         return (

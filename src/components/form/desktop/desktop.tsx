@@ -18,15 +18,22 @@ import {
     CardDescription, 
     CardHeader, 
     CardTitle } from "../../ui/card"
-import { postDesktop } from "@/api/desktop"
+import { deleteDesktop, postDesktop, updateDesktop } from "@/api/desktop"
+import { useUser } from "@/context/user"
 
 interface FormDesktopProps {
+    values?: {
+        desktop_id: number
+        title: string
+        description: string
+    }
     operation: string
     onClose: () => void
 }
 
-export const FormDesktop: React.FC<FormDesktopProps> = ({ onClose, operation }) => {
-    const user_id = JSON.parse(localStorage.getItem('user')).id
+export const FormDesktop: React.FC<FormDesktopProps> = ({ onClose, operation, values }) => {
+    const { user } = useUser()
+    const user_id = user!.user_id!
 
     const handleLinkClick = () => {
         onClose()
@@ -43,42 +50,44 @@ export const FormDesktop: React.FC<FormDesktopProps> = ({ onClose, operation }) 
             .string()
             .min(1, { message: "Esse campo não pode estar vazio." })
             .max(250, { message: "Esse campo não pode ter mais que 250 caracteres." }),
+        desktop_id: z
+            .number()
     })
 
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            title: "",
-            description: ""
+            title: values ? values.title : "",
+            description: values ? values.description : "",
+            desktop_id: values ? values.desktop_id : 1
         }
     })
 
-    async function onSubmit (values: z.infer<typeof formSchema>) {
+    async function onSubmit (formValues: z.infer<typeof formSchema>) {
         switch (operation) {
             case "create":
                 try {
-                    const desktop_id = await postDesktop(user_id, values)
-                    navigate(`/${desktop_id}/desktop`)
+                    const desktop_id = await postDesktop(user_id, formValues)
+                    navigate(`/${user_id}/d/${desktop_id}`)
                 } catch (error) {
                     //error
                 }
             break
-            /*case "update":
+            case "update":
                 try {
-                    const desktop_id = await updateDesktop(desktop_id, values)
-                    navigate(`/${desktop_id}/desktop`)
+                    await updateDesktop(values!.desktop_id, formValues)
                 } catch (error) {
                     //error
                 }
-            break*/
-            /*case "delete":
+            break
+            case "delete":
                 try {
-                    const desktop_id = await deleteDesktop(desktop_id)
-                    navigate(`/${user_id}/board`)
+                    await deleteDesktop(values!.desktop_id)
+                    navigate(`/${user_id}}/board`)
                 } catch (error) {
                     //error
                 }
-            break*/
+            break
         }
     }
 

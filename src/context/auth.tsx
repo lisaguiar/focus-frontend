@@ -6,18 +6,20 @@ interface AuthProps {
     authorized: boolean
     authorizedUrl: boolean
     loading: boolean
+    loadingUrl: boolean
 }
 
 interface ProviderProps {
     children: React.ReactNode
 }
 
-const AuthContext = createContext<AuthProps>({ authorized: false, authorizedUrl: false, loading: true })
+const AuthContext = createContext<AuthProps>({ authorized: false, authorizedUrl: false, loading: true, loadingUrl: true })
 
 export const AuthProvider: React.FC<ProviderProps> = ({ children }) => {
     const [authorized, setAuthorized] = useState<boolean>(false)
     const [authorizedUrl, setAuthorizedUrl] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(true)
+    const [loadingUrl, setLoadingUrl] = useState<boolean>(true)
     const { user, logout } = useUser()
 
     async function validateUrl () {
@@ -31,7 +33,7 @@ export const AuthProvider: React.FC<ProviderProps> = ({ children }) => {
         } catch (error) {
             setAuthorizedUrl(false)
         } finally {
-            setLoading(false)
+            setLoadingUrl(false)
         }
     }
 
@@ -58,13 +60,13 @@ export const AuthProvider: React.FC<ProviderProps> = ({ children }) => {
         if (!loading && !authorized) {
             logout()
         }
-        if (!loading && authorized) {
+        if (loadingUrl && authorized) {
             validateUrl()
         }
-    }, [loading, authorized])
+    }, [loading, loadingUrl, authorized])
 
     return (
-        <AuthContext.Provider value={{ authorized, authorizedUrl, loading }}>
+        <AuthContext.Provider value={{ authorized, authorizedUrl, loading, loadingUrl }}>
             {children}
         </AuthContext.Provider>
     )
