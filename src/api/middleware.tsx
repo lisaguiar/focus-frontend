@@ -1,3 +1,4 @@
+import { toast } from "sonner"
 import axios from "./config/axios"
 
 const pathname = window.location.pathname
@@ -17,8 +18,8 @@ export const url = async (user_id: number | null) => {
         try {
             const results = await axios.post(`/validate/url`, values)
             return results
-        } catch (error) {
-            return error
+        } catch (error: any) {
+            toast(error.response.data.error)
         }
     } else {
         const results = { data: { authorized: false }}
@@ -35,7 +36,7 @@ export const token = async (user_id: number | null) => {
             const results = { data: { authorized: false }}
             return results
         }   
-    } catch (error) {
-        return error
+    } catch (error: any) {
+        toast(error.response.data.error)
     }
 }

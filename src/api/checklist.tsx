@@ -1,11 +1,12 @@
+import { toast } from 'sonner'
 import axios from './config/axios'
 
 export const getChecklists = async (frame_id: number) => {
     try {
         const results = await axios.get(`/checklist/${frame_id}`)
         return results.data
-    } catch (error) {
-        return error
+    } catch (error: any) {
+        toast(error.response.data.error)
     }
 }
 
@@ -13,8 +14,8 @@ export const getChecklist = async (checklist_id: number) => {
     try {
         const results = await axios.get(`/checklist/single/${checklist_id}`)
         return results.data
-    } catch (error) {
-        return error
+    } catch (error: any) {
+        toast(error.response.data.error)
     }
 }
 
@@ -23,8 +24,8 @@ export const postChecklist = async (frame_id: number, values: { userdesktop_id: 
     try {
         const results = await axios.post(`/checklist/${frame_id}`, values)
         return results.data
-    } catch (error) {
-        return error
+    } catch (error: any) {
+        toast(error.response.data.error)
     }
 }
 
@@ -32,8 +33,8 @@ export const updateChecklist = async (checklist_id: number, values: { title: str
     try {
         const results = await axios.patch(`/checklist/${checklist_id}`, values)
         return results.data
-    } catch (error) {
-        return error
+    } catch (error: any) {
+        toast(error.response.data.error)
     }
 }
 
@@ -41,7 +42,7 @@ export const deleteChecklist = async (checklist_id: number) => {
     try {
         const results = await axios.patch(`/checklist/delete/${checklist_id}`)
         return results.data
-    } catch (error) {
-        return error
+    } catch (error: any) {
+        toast(error.response.data.error)
     }
 }

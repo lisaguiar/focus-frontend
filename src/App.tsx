@@ -6,10 +6,10 @@ import { SignIn } from '@/app/auth/sign-in'
 import { UnauthenticatedLayout } from '@/layout/unauthenticated'
 import { AuthenticatedLayout } from '@/layout/authenticated'
 import { Board } from '@/app/main/board'
-import { Desktop } from '@/app/main/desktop'
+import { DesktopPage } from '@/app/main/desktop'
 import { Member } from '@/app/main/member'
 import { Project } from './app/main/project'
-import { Frame } from './app/main/frame'
+import { FramePage } from './app/main/frame'
 
 const router = createBrowserRouter([
     {
@@ -37,7 +37,7 @@ const router = createBrowserRouter([
         },
         {
             path: '/:id/d/:desktop_id',
-            element: <Desktop />
+            element: <DesktopPage />
         },
         {
             path: '/:id/d/:desktop_id/members',
@@ -49,7 +49,7 @@ const router = createBrowserRouter([
         },
         {
             path: '/:id/d/:desktop_id/p/:project_id/f/:frame_id',
-            element: <Frame />
+            element: <FramePage />
         },
     ]
     }

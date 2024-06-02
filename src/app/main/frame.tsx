@@ -6,48 +6,13 @@ import { ActionChecklist } from "@/components/form/checklist/action-checklist"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Cross1Icon, DotFilledIcon, DotsVerticalIcon, PlusIcon } from "@radix-ui/react-icons"
+import { Cross1Icon, DotsVerticalIcon, PlusIcon } from "@radix-ui/react-icons"
 import { format } from "date-fns"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { Checklist, Frame, KanbanCard, KanbanColumn, Note } from "@/lib/types"
 
-type Frame = {
-    frame_id: number
-    model_id: number
-    title: string
-    description: string
-}
-
-type KanbanColumn = {
-    kanbancolumn_id: number
-    title: string
-}
-
-type KanbanCard = {
-    kanbancard_id: number
-    kanbancolumn_id: number
-    title: string
-    description: string
-    deadline?: Date
-}
-
-type Checklist = {
-    checklist_id: number
-    userdesktop_id: number
-    priority_id?: number
-    title: string
-    description: string
-    marked: boolean
-    deadline?: Date
-}
-
-type Note = {
-    note_id: number
-    title: string
-    content: string
-}
-
-export const Frame = () => {
+export const FramePage = () => {
     const pathname = window.location.pathname
     const frame_id = Number(pathname.split('/')[7])
     const navigate = useNavigate()
@@ -57,72 +22,6 @@ export const Frame = () => {
     const [kanbanCards, setKanbanCards] = useState<{ [key: number]: KanbanCard[] }>({})
     const [checklist, setChecklist] = useState<Checklist[]>([])
     const [note, setNote] = useState<Note[]>([])
-
-
-    const exampleKanbanColumns = [
-        { kanbancolumn_id: 1, title: "To Do" },
-        { kanbancolumn_id: 2, title: "In Progress" },
-        { kanbancolumn_id: 3, title: "Done" }
-    ]
-    
-    const exampleKanbanCards = {
-        1: [
-            { kanbancard_id: 1, kanbancolumn_id: 1, title: "Task 1", description: "Description for Task 1", deadline: "2024-05-31" },
-            { kanbancard_id: 2, kanbancolumn_id: 1, title: "Task 2", description: "Description for Task 2", deadline: "2024-06-01" }
-        ],
-        2: [
-            { kanbancard_id: 3, kanbancolumn_id: 2, title: "Task 3", description: "Description for Task 3", deadline: "2024-06-02" }
-        ],
-        3: [
-            { kanbancard_id: 4, kanbancolumn_id: 3, title: "Task 4", description: "Description for Task 4", deadline: "2024-06-03" }
-        ]
-    }
-
-    const exampleChecklists: Checklist[] = [
-        {
-            userdesktop_id: 1,
-            checklist_id: 1,
-            priority_id: 2,
-            title: "Checklist Item 1",
-            description: "Description for Checklist Item 1",
-            marked: false,
-            deadline: new Date("2024-06-01")
-        },
-        {
-            userdesktop_id: 1,
-            checklist_id: 2,
-            title: "Checklist Item 2",
-            description: "Description for Checklist Item 2",
-            marked: true,
-            deadline: new Date("2024-06-02")
-        },
-        {
-            userdesktop_id: 1,
-            checklist_id: 3,
-            title: "Checklist Item 3",
-            description: "Description for Checklist Item 3",
-            marked: false,
-            deadline: new Date("2024-06-03")
-        }
-    ]
-    
-    const exampleNotes: Note[] = [
-        {
-            note_id: 1,
-            title: "Note Title 1",
-            content: "Content of Note 1"
-        },
-        {
-            note_id: 2,
-            title: "Note Title 2",
-            content: "Content of Note 2"
-        },
-        {
-            note_id: 3,
-            title: "Note Title 3",
-            content: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-        }
-    ]
 
     useEffect(() => { 
         const fetchFrame = async () => {
@@ -150,13 +49,10 @@ export const Frame = () => {
             }
         }
         fetchFrame()
-
-        setChecklist(exampleChecklists)
-        setNote(exampleNotes)
     }, [frame_id])
 
     const renderFrameContent = () => {
-        /*if (frame!.model_id === 1) {
+        if (frame!.model_id === 1) {
             return (
                 <>
                     <p className="font-bold text-lg pt-8">Kanban</p>
@@ -214,7 +110,7 @@ export const Frame = () => {
                                         marked: item.marked
                                     }} />
                                     <div className="">
-                                        <Checkbox checked={item.marked} onCheckedChange={() => { função para marcar/desmarcar }} />
+                                        <Checkbox checked={item.marked} />
                                     </div>
                                     <div className="">
                                         {item.title}
@@ -227,14 +123,14 @@ export const Frame = () => {
                                 </div>
                             </div>
                         ))}
-                        <div className="flex justify-center items-center h-6 relative rounded-md bg-white" onClick={() => { função para adicionar novo item }}>
+                        <div className="flex justify-center items-center h-6 relative rounded-md bg-white">
                             <ActionChecklist operation="create" />
                             <PlusIcon />
                         </div>
                     </div>
                 </>
             )
-        } else if () {*/
+        } else if (frame!.model_id === 3) {
             return (
                 <>
                     <p className="font-bold text-lg pt-8">Anotações</p>
@@ -256,13 +152,14 @@ export const Frame = () => {
                                 </CardContent>
                             </Card>
                         ))}
-                        <div className="flex justify-center items-center h-6 relative rounded-md border-2 h-full bg-white">
+                        <div className="flex justify-center items-center relative rounded-md border-2 h-full bg-white">
                             <ActionChecklist operation="create" />
                             <PlusIcon />
                         </div>
                     </div>
                 </>
             )   
+        }
     }
 
     const FrameMap = () => {

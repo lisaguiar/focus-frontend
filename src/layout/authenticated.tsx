@@ -1,6 +1,7 @@
 import { Loading } from "@/app/main/loading"
-import { Navbar } from "@/components/root/navbar"
-import { Sidebar } from "@/components/root/sidebar"
+import { Navbar } from "@/components/main/navbar"
+import { Sidebar } from "@/components/main/sidebar"
+import { Toaster } from "@/components/ui/sonner"
 import { useAuth } from "@/context/auth"
 import { useUser } from "@/context/user"
 import { useEffect } from "react"
@@ -15,7 +16,7 @@ export const AuthenticatedLayout: React.FC = () => {
         if (!loading && !authorized) {
             navigate('/sign-in')
         }
-        console.log(authorizedUrl)
+
         if (!loading && !loadingUrl && authorized && !authorizedUrl && user) {
             navigate(`/${user.user_id}/board`)
         }
@@ -37,8 +38,9 @@ export const AuthenticatedLayout: React.FC = () => {
                         <Sidebar />
                     </div>
                     <div className="absolute top-16 right-5 w-outlet z-0">
-                        <div className="bg-destructive-foreground border-2 rounded-md min-h-outlet">
+                        <div className="border-2 rounded-md min-h-outlet">
                             <Outlet />
+                            <Toaster />
                         </div>
                         <div className="my-3" />
                     </div>
