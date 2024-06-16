@@ -1,13 +1,14 @@
 import { getDesktop } from "@/api/desktop"
 import { getProjects } from "@/api/project"
 import { ActionProject } from "@/components/form/project/action-project"
+import { MemberTable } from "@/components/main/member-table"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useUser } from "@/context/user"
-import { Desktop, Project } from "@/lib/types"
+import { Desktop, Member, Project, columns, members } from "@/lib/types"
 import { DotsVerticalIcon, PlusIcon } from "@radix-ui/react-icons"
 import { useEffect, useState } from "react"
 import { Dropdown } from "react-day-picker"
@@ -113,10 +114,23 @@ export const DesktopPage = () => {
         )
     }
 
+    const MemberMap = () => {
+        return (
+            <div className="py-2">
+                {project.length && 
+                    <>
+                        <p className="font-bold text-lg">Membros</p>
+                        <MemberTable columns={columns} data={members} />
+                    </>
+                }
+            </div>
+        )
+    }
+
     return (
         <div className="flex flex-wrap justify-center">
             <div className="flex justify-between w-[97%] min-h-full my-3 mx-2 mt-6 px-4 py-2 text-md font-bold">
-                <div className="w-[74%]">
+                <div className="w-[74%] min-h-full">
                     <DesktopMap />
                     <Tabs defaultValue="project" className="w-full">
                         <TabsList className="flex items-center justify-center">
@@ -126,7 +140,7 @@ export const DesktopPage = () => {
                             <TabsTrigger value="config">Configurações</TabsTrigger>
                         </TabsList>
                         <TabsContent value="project"><ProjectsMap /></TabsContent>
-                        <TabsContent value="member">Membros.</TabsContent>
+                        <TabsContent value="member"><MemberMap /></TabsContent>
                         <TabsContent value="config">Configurações</TabsContent>
                     </Tabs>
                 </div>
